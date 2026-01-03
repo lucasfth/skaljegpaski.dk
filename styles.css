@@ -1,0 +1,273 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    text-align: center;
+}
+
+.container {
+    padding: 20px;
+    position: relative;
+    z-index: 2;
+}
+
+/* Pure HTML/CSS ski-themed background */
+.bg {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+
+/* dark overlay to improve contrast for white text */
+.bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 40%, rgba(0,0,0,0.5), rgba(0,0,0,0.18) 55%, rgba(0,0,0,0) 80%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* mountains using CSS triangles */
+.mountain {
+    width: 0;
+    height: 0;
+    position: absolute;
+    bottom: -20px;
+    border-left: 300px solid transparent;
+    border-right: 300px solid transparent;
+    border-bottom: 320px solid #2f3854;
+    opacity: 0.55;
+    transform-origin: bottom center;
+}
+
+/* single centered mountain */
+.mountain.m-front {
+    left: 50%;
+    transform: translateX(-50%);
+    --mw: 420px;
+    --mh: 460px;
+
+    border-left: var(--mw) solid transparent;
+    border-right: var(--mw) solid transparent;
+    border-bottom: var(--mh) solid #3f4b6b;
+    opacity: 0.95;
+    bottom: calc(-1 * var(--mh) / 2);
+}
+
+/* trees made from stacked triangles */
+.tree {
+    width: 0;
+    height: 0;
+    position: absolute;
+    bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.tree.t1 { left: 8%; }
+.tree.t2 { left: 18%; }
+.tree.t3 { right: 8%; }
+
+.tree::before, .tree::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+}
+
+.tree::before {
+    bottom: 0px;
+    border-bottom: 40px solid #0b3a20;
+}
+
+.tree::after {
+    bottom: 18px;
+    border-left: 14px solid transparent;
+    border-right: 14px solid transparent;
+    border-bottom: 30px solid #0b6b31;
+}
+.snowflakes .flake {
+    position: absolute;
+    top: -10px;
+    width: 6px;
+    height: 6px;
+    background: #fff;
+    border-radius: 50%;
+    opacity: 0.9;
+    animation-name: fall;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+.snowflakes .f1 { left: 10%; animation-duration: 7s; animation-delay: 0s; }
+.snowflakes .f2 { left: 28%; animation-duration: 10s; animation-delay: 1s; }
+.snowflakes .f3 { left: 46%; animation-duration: 8s; animation-delay: 0.5s; }
+.snowflakes .f4 { left: 64%; animation-duration: 9s; animation-delay: 2s; }
+.snowflakes .f5 { left: 82%; animation-duration: 6s; animation-delay: 0.7s; }
+
+@keyframes fall {
+    0% { transform: translateY(-20px) translateX(0); opacity: 0.95; }
+    100% { transform: translateY(110vh) translateX(20px); opacity: 0; }
+}
+
+h1 {
+    font-size: 3rem;
+    margin-bottom: 2rem;
+    font-weight: 300;
+}
+
+.answer {
+    font-size: 15rem;
+    font-weight: bold;
+    margin: 2rem 0;
+    text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.subtitle {
+    font-size: 1.5rem;
+    font-weight: 300;
+    opacity: 0.9;
+}
+
+.date-picker {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 20px;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+input[type="datetime-local"] {
+    padding: 0.75rem 1.5rem;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+    cursor: pointer;
+    font-family: 'Arial', sans-serif;
+}
+
+input[type="datetime-local"]:focus {
+    outline: 3px solid rgba(255, 255, 255, 0.7);
+    outline-offset: 2px;
+}
+
+.countdown {
+    font-size: 2rem;
+    font-weight: 300;
+    margin-top: 1rem;
+    opacity: 0.95;
+}
+
+.countdown-label {
+    font-size: 1.2rem;
+    opacity: 0.8;
+    margin-bottom: 0.5rem;
+}
+
+.hidden {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2rem;
+    }
+
+    .answer {
+        font-size: 10rem;
+    }
+
+    .countdown {
+        font-size: 1.5rem;
+    }
+
+    .countdown-label {
+        font-size: 1rem;
+    }
+
+    input[type="datetime-local"] {
+        font-size: 1rem;
+        padding: 0.5rem 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    .answer {
+        font-size: 7rem;
+    }
+
+    .countdown {
+        font-size: 1.2rem;
+    }
+
+    .countdown-label {
+        font-size: 0.9rem;
+    }
+
+    input[type="datetime-local"] {
+        font-size: 0.9rem;
+        padding: 0.5rem 1rem;
+    }
+    /* scale background down on very small screens */
+    .mountain { border-left-width: 140px; border-right-width: 140px; border-bottom-width: 160px; }
+    .mountain.m-front {
+        --mw: 200px;
+        --mh: 240px;
+
+        border-left: var(--mw) solid transparent;
+        border-right: var(--mw) solid transparent;
+        border-bottom: var(--mh) solid #3f4b6b;
+        transform: translateX(-50%) scale(0.95);
+        bottom: calc(-1 * var(--mh) / 2);
+    }
+    .snowflakes .flake { width: 5px; height: 5px; }
+    /* smaller trees and flush bottom on very small screens */
+    .tree { bottom: env(safe-area-inset-bottom, 0px); }
+    .tree::before {
+        bottom: 0px;
+        border-left: 16px solid transparent;
+        border-right: 16px solid transparent;
+        border-bottom: 30px solid #0b3a20;
+    }
+    .tree::after {
+        bottom: 12px;
+        border-left: 12px solid transparent;
+        border-right: 12px solid transparent;
+        border-bottom: 22px solid #0b6b31;
+    }
+}

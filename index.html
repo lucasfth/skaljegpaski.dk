@@ -1,253 +1,42 @@
 <!DOCTYPE html>
 <html lang="da">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Skal jeg på ski?</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Arial', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            text-align: center;
-        }
-        
-        .container {
-            padding: 20px;
-        }
-        
-        h1 {
-            font-size: 3rem;
-            margin-bottom: 2rem;
-            font-weight: 300;
-        }
-        
-        .answer {
-            font-size: 15rem;
-            font-weight: bold;
-            margin: 2rem 0;
-            text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
-            animation: pulse 2s ease-in-out infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.05);
-            }
-        }
-        
-        .subtitle {
-            font-size: 1.5rem;
-            font-weight: 300;
-            opacity: 0.9;
-        }
-        
-        .date-picker {
-            margin-top: 2rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1rem;
-        }
-        
-        input[type="datetime-local"] {
-            padding: 0.75rem 1.5rem;
-            font-size: 1.2rem;
-            border: none;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.9);
-            color: #333;
-            cursor: pointer;
-            font-family: 'Arial', sans-serif;
-        }
-        
-        input[type="datetime-local"]:focus {
-            outline: 3px solid rgba(255, 255, 255, 0.7);
-            outline-offset: 2px;
-        }
-        
-        .countdown {
-            font-size: 2rem;
-            font-weight: 300;
-            margin-top: 1rem;
-            opacity: 0.95;
-        }
-        
-        .countdown-label {
-            font-size: 1.2rem;
-            opacity: 0.8;
-            margin-bottom: 0.5rem;
-        }
-        
-        .hidden {
-            display: none;
-        }
-        
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2rem;
-            }
-            
-            .answer {
-                font-size: 10rem;
-            }
-            
-            .countdown {
-                font-size: 1.5rem;
-            }
-            
-            .countdown-label {
-                font-size: 1rem;
-            }
-            
-            input[type="datetime-local"] {
-                font-size: 1rem;
-                padding: 0.5rem 1rem;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            h1 {
-                font-size: 1.5rem;
-            }
-            
-            .answer {
-                font-size: 7rem;
-            }
-            
-            .countdown {
-                font-size: 1.2rem;
-            }
-            
-            .countdown-label {
-                font-size: 0.9rem;
-            }
-            
-            input[type="datetime-local"] {
-                font-size: 0.9rem;
-                padding: 0.5rem 1rem;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skal jeg på ski?</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Skal jeg på ski?</h1>
-        <div class="answer">JA</div>
-        
-        <div class="date-picker">
-            <input type="datetime-local" id="skiDate" aria-label="Vælg dato og tidspunkt for skitur" />
-        </div>
-        
-        <div id="countdownContainer" class="hidden">
-            <p class="countdown-label">Tid til afgang:</p>
-            <div class="countdown" id="countdown"></div>
-        </div>
+  <div class="bg" aria-hidden="true">
+    <div class="mountain m-front"></div>
+
+    <div class="tree t1" aria-hidden="true"></div>
+    <div class="tree t2" aria-hidden="true"></div>
+    <div class="tree t3" aria-hidden="true"></div>
+
+    <div class="snowflakes" aria-hidden="true">
+      <div class="flake f1"></div>
+      <div class="flake f2"></div>
+      <div class="flake f3"></div>
+      <div class="flake f4"></div>
+      <div class="flake f5"></div>
+    </div>
+  </div>
+
+  <div class="container">
+    <h1>Skal jeg på ski?</h1>
+    <div class="answer">JA</div>
+    
+    <div id="countdownContainer" class="hidden">
+      <p class="countdown-label">Tid til afgang:</p>
+      <div class="countdown" id="countdown"></div>
     </div>
     
-    <script>
-        const skiDateInput = document.getElementById('skiDate');
-        const countdownContainer = document.getElementById('countdownContainer');
-        const countdownDisplay = document.getElementById('countdown');
-        let countdownInterval;
-        
-        // Function to get URL parameters
-        function getUrlParameter(name) {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get(name);
-        }
-        
-        // Function to set URL parameter
-        function setUrlParameter(name, value) {
-            const url = new URL(window.location);
-            if (value) {
-                url.searchParams.set(name, value);
-            } else {
-                url.searchParams.delete(name);
-            }
-            window.history.replaceState({}, '', url);
-        }
-        
-        // Function to format time difference
-        function formatTimeDifference(ms) {
-            if (ms <= 0) {
-                return 'Tid til at tage af sted! 🎿';
-            }
-            
-            const seconds = Math.floor(ms / 1000);
-            const minutes = Math.floor(seconds / 60);
-            const hours = Math.floor(minutes / 60);
-            const days = Math.floor(hours / 24);
-            
-            const remainingHours = hours % 24;
-            const remainingMinutes = minutes % 60;
-            const remainingSeconds = seconds % 60;
-            
-            let parts = [];
-            if (days > 0) parts.push(`${days} dag${days !== 1 ? 'e' : ''}`);
-            if (remainingHours > 0) parts.push(`${remainingHours} time${remainingHours !== 1 ? 'r' : ''}`);
-            if (remainingMinutes > 0) parts.push(`${remainingMinutes} minut${remainingMinutes !== 1 ? 'ter' : ''}`);
-            if (days === 0 && remainingHours === 0) {
-                parts.push(`${remainingSeconds} sekund${remainingSeconds !== 1 ? 'er' : ''}`);
-            }
-            
-            return parts.join(', ');
-        }
-        
-        // Function to update countdown
-        function updateCountdown(targetDate) {
-            const now = new Date().getTime();
-            const target = new Date(targetDate).getTime();
-            const difference = target - now;
-            
-            countdownDisplay.textContent = formatTimeDifference(difference);
-            
-            if (difference <= 0 && countdownInterval) {
-                clearInterval(countdownInterval);
-            }
-        }
-        
-        // Function to start countdown
-        function startCountdown(dateTimeString) {
-            if (countdownInterval) {
-                clearInterval(countdownInterval);
-            }
-            
-            if (dateTimeString) {
-                countdownContainer.classList.remove('hidden');
-                updateCountdown(dateTimeString);
-                countdownInterval = setInterval(() => updateCountdown(dateTimeString), 1000);
-            } else {
-                countdownContainer.classList.add('hidden');
-            }
-        }
-        
-        // Event listener for date input
-        skiDateInput.addEventListener('change', (e) => {
-            const selectedDate = e.target.value;
-            setUrlParameter('date', selectedDate);
-            startCountdown(selectedDate);
-        });
-        
-        // Initialize from URL parameter if present
-        const urlDate = getUrlParameter('date');
-        if (urlDate) {
-            skiDateInput.value = urlDate;
-            startCountdown(urlDate);
-        }
-    </script>
+    <div class="date-picker">
+      <input type="datetime-local" id="skiDate" aria-label="Vælg dato og tidspunkt for skitur" />
+    </div>
+  </div>
+  
+  <script src="main.js" defer></script>
 </body>
 </html>
