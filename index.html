@@ -74,6 +74,11 @@
             font-family: 'Arial', sans-serif;
         }
         
+        input[type="datetime-local"]:focus {
+            outline: 3px solid rgba(255, 255, 255, 0.7);
+            outline-offset: 2px;
+        }
+        
         .countdown {
             font-size: 2rem;
             font-weight: 300;
@@ -144,7 +149,7 @@
         <div class="answer">JA</div>
         
         <div class="date-picker">
-            <input type="datetime-local" id="skiDate" />
+            <input type="datetime-local" id="skiDate" aria-label="Vælg dato og tidspunkt for skitur" />
         </div>
         
         <div id="countdownContainer" class="hidden">
