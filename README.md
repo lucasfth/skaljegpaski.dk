@@ -10,6 +10,6 @@ Can show if you should go skiing based on:
 2. Your friends want to go skiing.
 3. The weather is good for skiing.
 
-Based on these conditions it will show a friendly "Yes!" or "No." answer, along with a countdown to the ski date.
+Based on these conditions it will show a "Yes!" or "No." answer.
 
 Also has a countdown timer to the ski date, which gets stored as URL parameters so you can share it with friends.
