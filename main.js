@@ -36,7 +36,7 @@ function formatTimeDifference(ms) {
   const remainingSeconds = seconds % 60;
 
   let parts = [];
-  if (days > 0) parts.push(`${days} dag${days !== 1 ? "e" : ""}`);
+  if (days > 0) parts.push(`${days} døgn`);
   if (remainingHours > 0)
     parts.push(`${remainingHours} time${remainingHours !== 1 ? "r" : ""}`);
   if (remainingMinutes > 0)
