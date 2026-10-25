@@ -1,5 +1,8 @@
 <div align="center">
-  <img src="./public/logo512.png" alt="Lucas Hanson's personal logo" width="64" />
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./public/hbit-mark-warm-on-dark.svg" />
+    <img src="./public/hbit-mark-warm-on-light.svg" alt="hbit logo" width="64" />
+  </picture>
 
   <h1>Skal jeg på ski?</h1>
 
