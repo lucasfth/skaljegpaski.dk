@@ -26,7 +26,12 @@ function formatTimeDifference(ms) {
     return "Tid til at tage af sted! 🎿";
   }
 
-  const seconds = Math.floor(ms / 1000);
+  // Seconds are only shown in the last hour. Before that, round up to whole
+  // minutes so 5 h 27 min 40 s reads "28 minutter", not one minute short.
+  const showSeconds = ms < 60 * 60 * 1000;
+  const seconds = showSeconds
+    ? Math.floor(ms / 1000)
+    : Math.ceil(ms / 60000) * 60;
   const minutes = Math.floor(seconds / 60);
   const hours = Math.floor(minutes / 60);
   const days = Math.floor(hours / 24);

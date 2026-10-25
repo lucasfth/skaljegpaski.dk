@@ -263,7 +263,6 @@ input[type="datetime-local"]:focus-visible { outline: 2px solid var(--cream); ou
     font-size: 0.72rem;
     color: #3a4a60;
 }
-.foot .sep { opacity: 0.5; }
 
 .repo-link {
     display: inline-flex;
