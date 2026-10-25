@@ -9,7 +9,7 @@
   <meta name="description" content="Skal jeg på ski? — a small playful site by Lucas Frey Torres Hanson. Pick a date to plan your ski trip and share it with friends." />
   <meta name="keywords" content="ski, countdown, Lucas Hanson, portfolio, web, javascript" />
   <meta name="subject" content="Personal project — Lucas Frey Torres Hanson" />
-  <meta name="theme-color" content="#764ba2" />
+  <meta name="theme-color" content="#0b1a2e" />
 
   <!-- Open Graph / social preview -->
   <meta property="og:title" content="Skal jeg på ski? — Lucas Hanson" />
@@ -25,7 +25,7 @@
   <!-- fonts and icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Space+Mono:ital,wght@0,400;1,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <!-- prefer explicit files from the `public/` folder so local dev works: -->
   <link rel="icon" type="image/x-icon" href="/public/favicon.ico" />
   <link rel="icon" type="image/png" sizes="32x32" href="/public/favicon-32x32.png">
@@ -48,52 +48,70 @@
 </head>
 <body>
   <div class="bg" aria-hidden="true">
-    <div class="mountain m-front"></div>
-
-    <div class="tree t1" aria-hidden="true"></div>
-    <div class="tree t2" aria-hidden="true"></div>
-    <div class="tree t3" aria-hidden="true"></div>
-
-    <div class="snowflakes" aria-hidden="true">
-      <div class="flake f1"></div>
-      <div class="flake f2"></div>
-      <div class="flake f3"></div>
-      <div class="flake f4"></div>
-      <div class="flake f5"></div>
+    <div class="glow"></div>
+    <div class="snowflakes">
+      <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
     </div>
+    <svg class="range" viewBox="0 0 1440 400" preserveAspectRatio="xMidYMax slice">
+      <polygon class="far" points="0,400 0,250 160,170 300,240 470,120 620,220 760,150 900,230 1060,110 1220,210 1340,160 1440,200 1440,400"/>
+      <polygon class="near" points="0,400 0,320 200,230 360,300 560,180 720,280 900,200 1080,300 1260,220 1440,290 1440,400"/>
+      <g class="snow">
+        <polygon points="170,243 200,230 230,243 220,248 208,242 196,250 184,243"/>
+        <polygon points="520,204 560,180 600,205 588,212 574,204 560,214 546,205 532,212"/>
+        <polygon points="860,218 900,200 940,222 928,228 914,220 900,230 886,221 872,228"/>
+        <polygon points="1225,236 1260,220 1295,234 1284,240 1270,233 1257,241 1243,234"/>
+      </g>
+      <g class="pines">
+        <polygon points="70,372 92,318 114,372"/><polygon points="76,348 92,300 108,348"/>
+        <polygon points="118,374 134,336 150,374"/>
+        <polygon points="1300,370 1324,312 1348,370"/><polygon points="1307,344 1324,294 1341,344"/>
+        <polygon points="1352,372 1368,334 1384,372"/>
+      </g>
+      <polygon class="ground" points="0,400 0,368 1440,360 1440,400"/>
+    </svg>
   </div>
 
-  <div class="container">
+  <header class="top">
+    <a class="brand" href="https://lucashanson.dk" target="_blank" rel="noopener noreferrer">
+      <img src="/public/hbit-mark-warm-on-dark.svg" alt="" width="28" height="28" />
+      <span>skaljegpaski.dk</span>
+    </a>
+    <button id="shareBtn" class="share-btn" aria-label="Del link med venner" title="Del link med venner" disabled>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+        <path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M16 6l-4-4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M12 2v13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>Del</span>
+    </button>
+  </header>
+  <div id="shareMessage" class="share-msg hidden" role="status" aria-live="polite"></div>
+
+  <main class="container">
     <h1>Skal jeg på ski?</h1>
     <div class="answer">JA</div>
-    
+
     <div id="countdownContainer" class="hidden">
-      <p class="countdown-label">Tid til afgang:</p>
+      <p class="countdown-label">Tid til afgang</p>
       <div class="countdown" id="countdown"></div>
     </div>
-    
-    <div class="date-picker">
+
+    <label class="date-picker">
+      <span>Afgang</span>
       <input type="datetime-local" id="skiDate" aria-label="Vælg dato og tidspunkt for skitur" />
-    </div>
-  </div>
-  <!-- Floating share button in the top-right -->
-  <button id="shareBtn" class="share-btn share-floating" aria-label="Del link med venner" title="Del link med venner" disabled>
-    <!-- simple share icon -->
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
-      <path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7" stroke="#111" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M16 6l-4-4-4 4" stroke="#111" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M12 2v13" stroke="#111" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-  </button>
-  <div id="shareMessage" class="share-msg hidden" role="status" aria-live="polite"></div>
-  
-  <!-- small link to the GitHub repository (bottom center) -->
-  <a class="repo-link" href="https://github.com/lucasfth/skaljegpaski.dk" target="_blank" rel="noopener noreferrer" aria-label="Åbn projekt på GitHub">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
-      <path d="M12 .5C5.73.5.75 5.48.75 11.77c0 4.92 3.19 9.09 7.61 10.56.56.1.77-.24.77-.54 0-.27-.01-1-.02-1.96-3.09.67-3.74-1.49-3.74-1.49-.5-1.28-1.22-1.62-1.22-1.62-.99-.68.08-.67.08-.67 1.09.08 1.66 1.12 1.66 1.12.97 1.67 2.55 1.19 3.17.91.1-.71.38-1.19.69-1.46-2.47-.28-5.07-1.24-5.07-5.48 0-1.21.43-2.2 1.14-2.98-.11-.28-.5-1.42.11-2.96 0 0 .92-.29 3.02 1.13a10.38 10.38 0 012.75-.37c.93.01 1.87.13 2.75.37 2.09-1.42 3.01-1.13 3.01-1.13.61 1.54.22 2.68.11 2.96.71.78 1.14 1.77 1.14 2.98 0 4.25-2.61 5.19-5.09 5.47.39.33.74.98.74 1.98 0 1.43-.01 2.59-.01 2.94 0 .3.2.65.78.54C19.06 20.86 22.25 16.69 22.25 11.77 22.25 5.48 17.27.5 12 .5z" fill="#111"/>
-    </svg>
-    <span>GitHub</span>
-  </a>
+    </label>
+  </main>
+
+  <footer class="foot">
+    <a class="repo-link" href="https://github.com/lucasfth/skaljegpaski.dk" target="_blank" rel="noopener noreferrer" aria-label="Åbn projekt på GitHub">
+      <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path fill="currentColor" d="M12 .5C5.73.5.75 5.48.75 11.77c0 4.92 3.19 9.09 7.61 10.56.56.1.77-.24.77-.54 0-.27-.01-1-.02-1.96-3.09.67-3.74-1.49-3.74-1.49-.5-1.28-1.22-1.62-1.22-1.62-.99-.68.08-.67.08-.67 1.09.08 1.66 1.12 1.66 1.12.97 1.67 2.55 1.19 3.17.91.1-.71.38-1.19.69-1.46-2.47-.28-5.07-1.24-5.07-5.48 0-1.21.43-2.2 1.14-2.98-.11-.28-.5-1.42.11-2.96 0 0 .92-.29 3.02 1.13a10.38 10.38 0 012.75-.37c.93.01 1.87.13 2.75.37 2.09-1.42 3.01-1.13 3.01-1.13.61 1.54.22 2.68.11 2.96.71.78 1.14 1.77 1.14 2.98 0 4.25-2.61 5.19-5.09 5.47.39.33.74.98.74 1.98 0 1.43-.01 2.59-.01 2.94 0 .3.2.65.78.54C19.06 20.86 22.25 16.69 22.25 11.77 22.25 5.48 17.27.5 12 .5z"/>
+      </svg>
+      <span>GitHub</span>
+    </a>
+    <span class="sep" aria-hidden="true">/</span>
+    <span>et hbit-projekt</span>
+  </footer>
   <script src="main.js" defer></script>
 </body>
 </html>
