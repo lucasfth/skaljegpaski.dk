@@ -249,6 +249,23 @@ input[type="datetime-local"]:focus-visible { outline: 2px solid var(--cream); ou
 
 .hidden { display: none; }
 
+/* Information disclosure leaves the countdown layout unchanged. */
+.site-guide {
+    position: absolute;
+    top: calc(100% - 25vh);
+    width: min(640px, calc(100% - 40px));
+    font-size: 0.75rem;
+    color: var(--muted);
+    text-align: left;
+    line-height: 1.7;
+}
+.site-guide summary { cursor: pointer; text-align: center; }
+.site-guide[open] { z-index: 4; padding: 1rem; background: var(--sky-top); border: 1px solid var(--glass-border); border-radius: 12px; }
+.site-guide h2, .site-guide p, .site-guide nav { margin-top: 1rem; }
+.site-guide a, .info-page a { color: var(--cream); }
+.info-page { position: relative; z-index: 2; max-width: 760px; margin: 4rem auto; padding: 0 24px; text-align: left; line-height: 1.8; }
+.info-page p, .info-page nav { margin-top: 1.5rem; }
+
 /* ---------- Footer ---------- */
 .foot {
     position: fixed;

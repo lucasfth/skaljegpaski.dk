@@ -36,7 +36,9 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/public/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/public/apple-touch-icon.png" />
 
-  <title>Skal jeg på ski?</title>
+  <title>skaljegpaski.dk | Ski trip countdown</title>
+  <link rel="alternate" type="text/markdown" href="/index.md">
+  <link rel="describedby" href="/llms.txt">
   <link rel="stylesheet" href="styles.css">
 
   <!-- Structured data linking this project to your portfolio -->
@@ -45,6 +47,7 @@
       "@context": "https://schema.org",
       "@type": "Person",
       "name": "Lucas Frey Torres Hanson",
+      "description": "Creator of skaljegpaski.dk, a personal ski trip countdown with shareable departure dates.",
       "url": "https://lucashanson.dk",
       "sameAs": ["https://github.com/lucasfth"]
     }
@@ -104,6 +107,15 @@
       <span>Afgang</span>
       <input type="datetime-local" id="skiDate" aria-label="Vælg dato og tidspunkt for skitur" />
     </label>
+
+    <details class="site-guide" lang="en">
+      <summary>About this ski trip countdown</summary>
+      <h2>Plan and share your departure</h2>
+      <p>skaljegpaski.dk is a small, playful ski trip countdown by Lucas Frey Torres Hanson. Choose a departure date and time to see how long remains before your trip. The answer to the site's skiing question is always yes: it is encouragement, not a weather forecast or a safety recommendation.</p>
+      <p>The live countdown runs in your browser. Your chosen date is saved locally on this device and added to the page URL so you can share the same departure with friends. Use the share button for native device sharing or a copied link. Shared dates use each visitor's local time, not a fixed timezone.</p>
+      <p>You can read this guide without JavaScript; the interactive countdown, date persistence and sharing need JavaScript. This site does not book trips, sell lift passes, or provide snow reports, resort opening times or avalanche advice.</p>
+      <nav aria-label="Site information"><a href="/about/">About</a> · <a href="/contact/">Contact</a> · <a href="/privacy/">Privacy</a></nav>
+    </details>
   </main>
 
   <footer class="foot">

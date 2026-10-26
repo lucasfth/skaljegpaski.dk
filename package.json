@@ -1,0 +1,10 @@
+{
+  "name": "ski-agent-readiness",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node --test",
+    "start": "npx wrangler@4 dev --ip 127.0.0.1 --port 8793"
+  }
+}

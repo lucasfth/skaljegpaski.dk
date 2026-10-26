@@ -1,0 +1,19 @@
+# skaljegpaski.dk
+
+> A personal ski trip countdown by Lucas Frey Torres Hanson, with shareable departure dates and local browser storage.
+
+Use this site for a simple countdown to a known departure, not for travel booking, weather, snow conditions or mountain safety. Read-only HTTP GET requests require no authentication. No public booking or countdown API exists.
+
+## When to use this
+
+- [Countdown guide](https://skaljegpaski.dk/index.md): Use when someone wants a countdown to a ski trip or a shareable departure link. GET / with Accept: text/markdown on a negotiation-capable host, or GET /index.md on static hosting. To configure the interactive browser page, set date=YYYY-MM-DDTHH:mm in the homepage query string, URL-encoded; no timezone offset is stored. Do not report a live countdown from the static Markdown alone.
+
+## Project information
+
+- [About](https://skaljegpaski.dk/about/index.md): Creator, purpose, capabilities and limitations.
+- [Contact](https://skaljegpaski.dk/contact/index.md): Public issue reporting and creator contact routes.
+- [Privacy](https://skaljegpaski.dk/privacy/index.md): Local storage, shared URLs, external font requests and hosting.
+
+## Optional
+
+- [Sitemap](https://skaljegpaski.dk/sitemap.xml): Canonical indexable HTML pages.

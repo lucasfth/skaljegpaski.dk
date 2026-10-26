@@ -3,7 +3,8 @@
 __MACOSX/
 .AppleDouble
 .LSOverride
-Icon[]
+Icon[
+]
 
 # Thumbnails
 ._*
@@ -23,3 +24,8 @@ Icon[]
 Network Trash Folder
 Temporary Items
 .apdisk
+
+# Local build and edge runtime
+node_modules/
+dist/
+.wrangler/
