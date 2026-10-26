@@ -59,13 +59,13 @@ content modification dates.
 npm run build
 npm test
 npm start
-# In another terminal:
-node scripts/verify.mjs http://127.0.0.1:8793
+# Verify production endpoints, HTTP caching and conditional responses:
+node scripts/verify.mjs https://skaljegpaski.dk
 ```
 
 Node 22 or later is required for these development checks. The site itself remains
-static and dependency-free. `npm start` downloads Wrangler 4 through npx for a
-local Cloudflare Workers runtime; it does not publish or change DNS.
+static and dependency-free. `npm start` uses Python's static server on localhost:8000.
+No Cloudflare runtime, hosting migration or DNS changes are required.
 
 ### Hosting limitation and publication
 
@@ -74,26 +74,26 @@ Markdown siblings, llms.txt, robots.txt, sitemap and custom HTML 404, but cannot
 choose a representation from the Accept header or set `Vary: Accept`. Separate
 `.md` URLs alone do not satisfy homepage negotiation or negotiated 404 checks.
 
-`wrangler.json` and `src/worker.mjs` provide an optional Workers Assets deployment.
-Every request reaches the Worker. It negotiates HTML/Markdown with q-values,
-returns 406 when neither is acceptable, preserves real 404 statuses, and sets
-`Vary: Accept`. Negotiated responses use no-store to avoid representation mixing.
-Only an explicit asset allowlist is exposed; source and test files are excluded.
+Agents should GET the explicit Markdown URLs listed in `llms.txt`. Its guidance
+covers shared-link construction, browser-local date semantics, URL precedence,
+localStorage side effects and actions that need user intent. Static content is
+not a live countdown API.
 
-Publication requires approval to push this repository. Full negotiation also
-requires an approved hosting cutover plus Cloudflare account/domain access or
-another programmable edge host. No DNS, hosting, repository, or account changes
-are performed by the build. After an authorized deployment, run:
+The original `main.js`, `styles.css` and asset URLs are unchanged by the static-host
+follow-up. There is no cache-busting, no storage migration and no no-store policy.
+GitHub Pages may revalidate content during its normal deployment; preserving its
+cache policy does not mean edited files stay stale forever. The production verifier
+checks real HTTP cache headers and ETag-based 304 responses.
+
+After an authorized deployment, run:
 
 ```bash
 node scripts/verify.mjs https://skaljegpaski.dk
-curl -sS -L -i -H 'Accept: text/markdown' https://skaljegpaski.dk/
-curl -sS -L -i -H 'Accept: text/html' https://skaljegpaski.dk/
-curl -sS -L -i -H 'Accept: text/markdown' https://skaljegpaski.dk/some-path-that-does-not-exist
 ```
 
-Verify both final status and response body, not headers alone. The verifier is
-strict: GitHub Pages will not pass its negotiation checks.
+The verifier checks the supported static hosting contract, not impossible content
+negotiation. Markdown files can be served as text/plain by GitHub Pages; consumers
+should use the documented URLs and parse their Markdown bodies.
 
 ### Remaining product decisions
 

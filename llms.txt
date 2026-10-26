@@ -6,7 +6,7 @@ Use this site for a simple countdown to a known departure, not for travel bookin
 
 ## When to use this
 
-- [Countdown guide](https://skaljegpaski.dk/index.md): Use when someone wants a countdown to a ski trip or a shareable departure link. GET / with Accept: text/markdown on a negotiation-capable host, or GET /index.md on static hosting. To configure the interactive browser page, set date=YYYY-MM-DDTHH:mm in the homepage query string, URL-encoded; no timezone offset is stored. Do not report a live countdown from the static Markdown alone.
+- [Countdown guide](https://skaljegpaski.dk/index.md): Use when someone wants a countdown to a ski trip or a shareable departure link. This site uses GitHub Pages: GET /index.md for Markdown. Accept: text/markdown does not change the HTML homepage or HTML 404 response. To configure the interactive browser page, set date=YYYY-MM-DDTHH:mm in the homepage query string, URL-encoded; no timezone offset is stored. The URL date takes precedence over the saved skiDate value in localStorage. Without a URL date, the browser restores its saved date; clearing the date removes the saved value and the date parameter, while other query parameters remain. Dates without a time default to 17:00. Opening a shared link saves its date on that device. Do not clear browser storage, change a departure or activate sharing without the user asking. The static Markdown is identical for all date parameters: do not report a live countdown from it or imply that requesting a URL starts a server-side timer.
 
 ## Project information
 

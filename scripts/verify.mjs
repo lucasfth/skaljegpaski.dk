@@ -1,39 +1,52 @@
 import assert from 'node:assert/strict';
-
-const base = process.argv[2] || 'http://127.0.0.1:8793';
-let failures = 0;
+const base = process.argv[2] || 'https://skaljegpaski.dk';
+let failures = 0, checks = 0;
 async function check(label, fn) {
+  checks++;
   try { await fn(); console.log(`PASS ${label}`); }
   catch (error) { failures++; console.error(`FAIL ${label}: ${error.message}`); }
 }
-for (const path of ['/', '/about', '/contact', '/privacy']) {
-  for (const type of ['text/html', 'text/markdown']) {
-    await check(`${path} ${type}`, async () => {
-      const response = await fetch(new URL(path, base), { headers:{ Accept:type } });
-      assert.equal(response.status, 200);
-      assert.ok(response.headers.get('content-type')?.startsWith(type));
-      assert.match(response.headers.get('vary') || '', /\bAccept\b/i);
-      const body = await response.text();
-      assert.ok(body.length >= 500);
-      assert.match(body, type === 'text/markdown' ? /^# / : /<h1>/);
-    });
-  }
-}
-for (const [path, type] of [['/index.md','text/markdown'],['/about/index.md','text/markdown'],['/contact/index.md','text/markdown'],['/privacy/index.md','text/markdown'],['/llms.txt','text/plain'],['/sitemap.xml','application/xml'],['/robots.txt','text/plain']]) {
+for (const path of ['/', '/?date=2027-01-29T17:00', '/about/', '/contact/', '/privacy/']) {
   await check(path, async () => {
     const response = await fetch(new URL(path, base));
     assert.equal(response.status, 200);
-    assert.ok(response.headers.get('content-type')?.startsWith(type));
-    assert.ok((await response.text()).length > 20);
+    assert.match(response.headers.get('content-type'), /text\/html/);
+    const body = await response.text();
+    assert.match(body, /<h1>/);
+    assert.ok(body.length > 500);
   });
 }
-await check('Markdown 404', async () => {
-  const response = await fetch(new URL('/__ora-404-probe-agent-readiness', base), {headers:{Accept:'text/markdown'}});
+for (const path of ['/index.md', '/about/index.md', '/contact/index.md', '/privacy/index.md', '/llms.txt', '/sitemap.xml', '/robots.txt', '/404.md']) {
+  await check(path, async () => {
+    const response = await fetch(new URL(path, base));
+    assert.equal(response.status, 200);
+    const body = await response.text();
+    assert.ok(body.length > 20);
+    assert.doesNotMatch(body, /<!doctype html/i);
+    if (path.endsWith('.md') || path === '/llms.txt') assert.match(body, /^# /);
+    if (path === '/sitemap.xml') assert.match(body, /http:\/\/www.sitemaps.org\/schemas\/sitemap\/0.9/);
+    console.log(`  Content-Type: ${response.headers.get('content-type')}`);
+  });
+}
+await check('real 404 with discovery links', async () => {
+  const response = await fetch(new URL('/__agent-static-host-404-check', base), {headers:{Accept:'text/markdown'}});
   assert.equal(response.status, 404);
-  assert.ok(response.headers.get('content-type')?.startsWith('text/markdown'));
-  const body = await response.text();
-  assert.ok(body.length >= 20);
-  assert.match(body, /\[.+\]\(.+(?:llms.txt|sitemap.xml).*\)/);
+  assert.match(await response.text(), /llms\.txt|sitemap\.xml/);
 });
-console.log(`Verification target: ${base}; failed checks: ${failures}`);
+await check('homepage and assets remain HTTP-cacheable', async () => {
+  for (const path of ['/', '/main.js', '/styles.css']) {
+    const response = await fetch(new URL(path, base));
+    assert.equal(response.status, 200);
+    const policy = response.headers.get('cache-control') || '';
+    assert.doesNotMatch(policy, /no-store|no-cache/);
+    assert.match(policy, /max-age=\d+/);
+    const etag = response.headers.get('etag');
+    assert.ok(etag);
+    await response.arrayBuffer();
+    const cached = await fetch(new URL(path, base), {headers:{'If-None-Match':etag}});
+    assert.equal(cached.status, 304);
+    console.log(`  ${path}: ${policy}, conditional request 304`);
+  }
+});
+console.log(`${checks} checks, ${failures} failures; ${base}`);
 process.exitCode = failures ? 1 : 0;
